@@ -1,11 +1,4 @@
--- Script para inicializar la base de datos y crear las tablas necesarias
-\c postgres;
-DROP DATABASE IF EXISTS user_transactions_db;
-CREATE DATABASE user_transactions_db;
-
-\c user_transactions_db;
-
--- Crear tabla "User"
+-- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
     "fullName" TEXT NOT NULL,
@@ -18,10 +11,7 @@ CREATE TABLE "User" (
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
--- Crear índice único para el campo "email" en la tabla "User"
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
-
--- Crear tabla "Transaction"
+-- CreateTable
 CREATE TABLE "Transaction" (
     "id" SERIAL NOT NULL,
     "type" TEXT NOT NULL,
@@ -33,10 +23,8 @@ CREATE TABLE "Transaction" (
     CONSTRAINT "Transaction_pkey" PRIMARY KEY ("id")
 );
 
--- Agregar clave foránea en "Transaction" referenciando "User"
-ALTER TABLE "Transaction" 
-ADD CONSTRAINT "Transaction_userId_fkey" 
-FOREIGN KEY ("userId") 
-REFERENCES "User"("id") 
-ON DELETE RESTRICT 
-ON UPDATE CASCADE;
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- AddForeignKey
+ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
