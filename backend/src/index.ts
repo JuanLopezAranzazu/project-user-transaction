@@ -16,7 +16,7 @@ app.get("/", (_req: Request, res: Response) => {
   res.json({ "message": "Hello World!" });
 });
 
-// iniciar el servidor
+// Iniciar el servidor
 app.listen(SERVER_PORT, () => {
   console.log(`Server is running on port ${SERVER_PORT}`);
   console.log(`http://localhost:${SERVER_PORT}`);
