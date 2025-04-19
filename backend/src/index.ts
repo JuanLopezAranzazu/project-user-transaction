@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 import loadRoutes from "./routes";
 import { errorHandler } from "./middlewares/error.middleware";
 import { notFoundHandler } from "./middlewares/noFound.middleware";
@@ -14,6 +15,7 @@ const SERVER_PORT = process.env.SERVER_PORT || 3000;
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 // Cargar las rutas
 loadRoutes(app);

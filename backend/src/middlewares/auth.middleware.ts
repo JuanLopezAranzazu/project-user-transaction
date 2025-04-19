@@ -2,8 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { CustomJwtPayload } from "../types";
 
-const SECRET_KEY: string = process.env.JWT_SECRET ?? "your_secret_key";
-
+// Middleware para verificar el token JWT
 const authMiddleware = (
   req: Request & { user?: number },
   res: Response,
@@ -17,14 +16,14 @@ const authMiddleware = (
   }
 
   try {
-    const decoded = jwt.verify(token, SECRET_KEY) as CustomJwtPayload;
-    if (!decoded) {
-      res.status(401).json({ message: "Invalid token." });
-      return;
-    }
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as CustomJwtPayload;
     req.user = decoded.user;
     next();
-  } catch (err) {
+  } catch (err: any) {
+    if(err.name === "TokenExpiredError") {
+      res.status(401).json({ message: "Token expired." });
+      return;
+    }
     res.status(400).json({ message: "Invalid token." });
   }
 };

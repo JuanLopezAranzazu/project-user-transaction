@@ -3,8 +3,7 @@ import jwt from "jsonwebtoken";
 import { hashPassword, comparePassword } from "../utils/password";
 import prisma from "../config/prisma";
 
-const SECRET_KEY: string = process.env.JWT_SECRET ?? "your_secret_key";
-
+// Endpoint para registrar un nuevo usuario
 export const register = async (
   req: Request,
   res: Response,
@@ -16,12 +15,12 @@ export const register = async (
     const existingUser = await prisma.user.findUnique({
       where: { email },
     });
-
+    // Validar si el usuario ya existe
     if (existingUser) {
       res.status(409).json({ message: "Email already exists" });
       return;
     }
-
+    // Crear un nuevo usuario
     const user = await prisma.user.create({
       data: {
         fullName,
@@ -37,6 +36,7 @@ export const register = async (
   }
 };
 
+// Endpoint para iniciar sesión
 export const login = async (
   req: Request,
   res: Response,
@@ -47,13 +47,13 @@ export const login = async (
     const user = await prisma.user.findUnique({
       where: { email },
     });
-
+    // Validar si el usuario existe
     if (!user || !(await comparePassword(password, user.passwordHash))) {
       res.status(401).json({ message: "Invalid credentials" });
       return;
     }
-
-    const token = jwt.sign({ user: user.id }, SECRET_KEY, {
+    // Generar un token JWT y enviarlo como cookie
+    const token = jwt.sign({ user: user.id }, process.env.JWT_SECRET!, {
       expiresIn: "1h",
     });
     res.cookie("token", token, {
@@ -67,6 +67,7 @@ export const login = async (
   }
 };
 
+// Endpoint para cerrar sesión
 export const logout = async (
   req: Request & { user?: number },
   res: Response,
@@ -85,6 +86,7 @@ export const logout = async (
   }
 };
 
+// Endpoint para obtener información del usuario autenticado
 export const me = async (
   req: Request & { user?: number },
   res: Response,

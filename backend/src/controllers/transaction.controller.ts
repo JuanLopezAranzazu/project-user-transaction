@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import prisma from "../config/prisma";
 
+// Endpoint para crear una transacción
 export const createTransaction = async (
   req: Request & { user?: number },
   res: Response,
@@ -13,7 +14,7 @@ export const createTransaction = async (
       return;
     }
     const { type, amount, description } = req.body;
-
+    // Crear la transacción en la base de datos
     const transaction = await prisma.transaction.create({
       data: {
         type,
@@ -29,6 +30,7 @@ export const createTransaction = async (
   }
 };
 
+// Endpoint para obtener todas las transacciones de un usuario
 export const getTransactions = async (
   req: Request & { user?: number },
   res: Response,
@@ -50,6 +52,7 @@ export const getTransactions = async (
   }
 };
 
+// Endpoint para obtener una transacción por ID
 export const getTransactionById = async (
   req: Request & { user?: number },
   res: Response,
@@ -66,7 +69,7 @@ export const getTransactionById = async (
     const transaction = await prisma.transaction.findUnique({
       where: { id: Number(id), userId },
     });
-
+    // Verificar si la transacción existe y pertenece al usuario
     if (!transaction) {
       res.status(404).json({ message: "Transaction not found" });
       return;
@@ -78,6 +81,7 @@ export const getTransactionById = async (
   }
 };
 
+// Endpoint para actualizar una transacción
 export const updateTransaction = async (
   req: Request & { user?: number },
   res: Response,
@@ -95,12 +99,12 @@ export const updateTransaction = async (
     const transaction = await prisma.transaction.findUnique({
       where: { id: Number(id), userId },
     });
-
+    // Verificar si la transacción existe y pertenece al usuario
     if (!transaction) {
       res.status(404).json({ message: "Transaction not found" });
       return;
     }
-
+    // Actualizar la transacción en la base de datos
     const updatedTransaction = await prisma.transaction.update({
       where: { id: Number(id) },
       data: { type, amount, description },
@@ -112,6 +116,7 @@ export const updateTransaction = async (
   }
 };
 
+// Endpoint para eliminar una transacción
 export const deleteTransaction = async (
   req: Request & { user?: number },
   res: Response,
@@ -128,12 +133,12 @@ export const deleteTransaction = async (
     const transaction = await prisma.transaction.findUnique({
       where: { id: Number(id), userId },
     });
-
+    // Verificar si la transacción existe y pertenece al usuario
     if (!transaction) {
       res.status(404).json({ message: "Transaction not found" });
       return;
     }
-
+    // Eliminar la transacción de la base de datos
     await prisma.transaction.delete({
       where: { id: Number(id) },
     });
