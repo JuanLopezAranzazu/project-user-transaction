@@ -24,7 +24,7 @@ const authMiddleware = (
       res.status(401).json({ message: "Token expired." });
       return;
     }
-    res.status(400).json({ message: "Invalid token." });
+    res.status(401).json({ message: "Invalid token." });
   }
 };
 
