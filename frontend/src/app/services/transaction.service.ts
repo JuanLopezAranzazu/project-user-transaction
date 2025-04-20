@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Transaction } from '../types';
+import { Transaction, TransactionRequest } from '../types';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -15,20 +15,20 @@ export class TransactionService {
 
   // Obtener todas las transacciones del usuario
   getTransactions(): Observable<Transaction[]> {
-    return this.http.get<Transaction[]>(`${environment.apiUrl}/transactions`);
+    return this.http.get<Transaction[]>(`${environment.apiUrl}/transaction`);
   }
 
   // Obtener transacciones por ID
   getTransaction(id: number): Observable<Transaction> {
     return this.http.get<Transaction>(
-      `${environment.apiUrl}/transactions/${id}`
+      `${environment.apiUrl}/transaction/${id}`
     );
   }
 
   // Crear una transacción
-  createTransaction(transaction: Transaction): Observable<Transaction> {
+  createTransaction(transaction: TransactionRequest): Observable<Transaction> {
     return this.http.post<Transaction>(
-      `${environment.apiUrl}/transactions`,
+      `${environment.apiUrl}/transaction`,
       transaction
     );
   }
@@ -36,16 +36,16 @@ export class TransactionService {
   // Actualizar una transacción
   updateTransaction(
     id: number,
-    transaction: Transaction
+    transaction: TransactionRequest
   ): Observable<Transaction> {
     return this.http.put<Transaction>(
-      `${environment.apiUrl}/transactions/${id}`,
+      `${environment.apiUrl}/transaction/${id}`,
       transaction
     );
   }
 
   // Eliminar una transacción
   deleteTransaction(id: number): Observable<void> {
-    return this.http.delete<void>(`${environment.apiUrl}/transactions/${id}`);
+    return this.http.delete<void>(`${environment.apiUrl}/transaction/${id}`);
   }
 }

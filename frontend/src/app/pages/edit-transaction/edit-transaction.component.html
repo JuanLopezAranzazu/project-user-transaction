@@ -1,1 +1,49 @@
-<p>edit-transaction works!</p>
+<div class="container mt-5">
+  <h2 class="mb-4">Edit Transaction</h2>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <form *ngIf="transaction" (ngSubmit)="updateTransaction(id, transaction)">
+    <div class="mb-3">
+      <label class="form-label">Description</label>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="transaction.description"
+        name="description"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Amount</label>
+      <input
+        type="number"
+        class="form-control"
+        [(ngModel)]="transaction.amount"
+        name="amount"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Type</label>
+      <select
+        class="form-select"
+        [(ngModel)]="transaction.type"
+        name="type"
+        required
+      >
+        <option [ngValue]="'income'">Income</option>
+        <option [ngValue]="'expense'">Expense</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">Update</button>
+    <button type="button" class="btn btn-secondary ms-2" (click)="cancel()">
+      Cancel
+    </button>
+  </form>
+</div>

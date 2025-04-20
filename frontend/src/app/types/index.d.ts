@@ -1,22 +1,29 @@
 // Esquema para transacciones
 export interface Transaction {
-  id?: number;
+  id: number;
   amount: number;
   description: string;
   type: 'income' | 'expense';
   userId: number;
-  createdAt?: string;
+  createdAt: string;
+}
+
+// Esquema para crear transacciones
+export interface TransactionRequest {
+  amount: number;
+  description: string;
+  type: 'income' | 'expense';
 }
 
 // Esquema para usuarios
 export interface User {
-  id?: number;
+  id: number;
   fullName?: string;
   email: string;
   passwordHash: string;
   phone?: string;
   address?: string;
-  createdAt?: string;
+  createdAt: string;
 }
 
 // Esquema para inicios de sesión
