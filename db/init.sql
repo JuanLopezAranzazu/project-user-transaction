@@ -1,9 +1,9 @@
 -- Script para inicializar la base de datos y crear las tablas necesarias
 \c postgres;
-DROP DATABASE IF EXISTS user_transactions_db;
-CREATE DATABASE user_transactions_db;
+DROP DATABASE IF EXISTS mydatabase;
+CREATE DATABASE mydatabase;
 
-\c user_transactions_db;
+\c mydatabase;
 
 -- Crear tabla "User"
 CREATE TABLE "User" (

@@ -4,6 +4,7 @@ import { AddTransactionComponent } from './pages/add-transaction/add-transaction
 import { EditTransactionComponent } from './pages/edit-transaction/edit-transaction.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 import { MissingComponent } from './pages/missing/missing.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { authGuard } from './guards/auth.guard';
@@ -26,6 +27,11 @@ export const routes: Routes = [
       {
         path: 'edit-transaction/:id',
         component: EditTransactionComponent,
+        canActivate: [authGuard],
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent,
         canActivate: [authGuard],
       },
     ],

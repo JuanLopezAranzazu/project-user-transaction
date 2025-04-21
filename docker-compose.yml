@@ -1,0 +1,49 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: backend
+    ports:
+      - "3000:3000"   # Exponer puerto 3000 para la API de Express
+    env_file:
+      - ./backend/.env  # Cargar variables de entorno desde el archivo .env
+    depends_on:
+      - db
+    networks:
+      - app-network
+    volumes:
+      - ./backend:/app
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    ports:
+      - "4200:80"  # Exponer el puerto de Angular en el contenedor
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    volumes:
+      - ./frontend:/app
+
+  db:
+    image: postgres:13
+    container_name: db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5432:5432"  # Exponer puerto 5432 para acceder a la base de datos
+    volumes:
+      - db_data:/var/lib/postgresql/data  # Persistir datos de la base de datos
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db_data:
